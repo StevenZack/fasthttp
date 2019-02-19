@@ -725,6 +725,9 @@ func (ctx *RequestCtx) SetContentTypeBytes(contentType []byte) {
 func (ctx *RequestCtx) RequestURI() []byte {
 	return ctx.Request.Header.RequestURI()
 }
+func (r *RequestCtx) SetHeader(k, v string) {
+	r.Response.Header.Set(k, v)
+}
 func (r *RequestCtx) GetURI() string {
 	return string(r.URI().Path())
 }
