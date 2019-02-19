@@ -290,6 +290,9 @@ func (a *Args) GetUint(key string) (int, error) {
 	}
 	return ParseUint(value)
 }
+func (a *Args) Get(key string) string {
+	return string(a.Peek(key))
+}
 
 // SetUint sets uint value for the given key.
 func (a *Args) SetUint(key string, value int) {
