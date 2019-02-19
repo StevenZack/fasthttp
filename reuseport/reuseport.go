@@ -13,7 +13,7 @@ import (
 	"net"
 	"strings"
 
-	"github.com/valyala/tcplisten"
+	"github.com/StevenZack/tcplisten"
 )
 
 // ErrNoReusePort is returned if the OS doesn't support SO_REUSEPORT.
@@ -36,7 +36,7 @@ func (e *ErrNoReusePort) Error() string {
 //
 // - TCP_FASTOPEN. See https://lwn.net/Articles/508865/ for details.
 //
-// Use https://github.com/valyala/tcplisten if you want customizing
+// Use https://github.com/StevenZack/tcplisten if you want customizing
 // these options.
 //
 // Only tcp4 and tcp6 networks are supported.

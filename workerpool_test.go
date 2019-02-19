@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/valyala/fasthttp/fasthttputil"
+	"github.com/StevenZack/fasthttp/fasthttputil"
 )
 
 func TestWorkerPoolStartStopSerial(t *testing.T) {

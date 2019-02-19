@@ -16,7 +16,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/valyala/fasthttp/fasthttputil"
+	"github.com/StevenZack/fasthttp/fasthttputil"
 )
 
 func TestClientParseConn(t *testing.T) {
