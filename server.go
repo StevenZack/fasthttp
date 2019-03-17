@@ -737,6 +737,9 @@ func (r *RequestCtx) SetJsHeader() {
 func (r *RequestCtx) SetCssHeader() {
 	r.SetHeader("Content-Type", "text/css")
 }
+func (r *RequestCtx) SetContentLength(l int) {
+	r.SetHeader("Content-Length", fmt.Sprintf("%v", l))
+}
 func (r *RequestCtx) GetURI() string {
 	return string(r.URI().Path())
 }
