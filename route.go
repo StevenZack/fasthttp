@@ -9,13 +9,15 @@ type Router struct {
 }
 
 func NewRouter() *Router {
-	r:= &Router{
+	r := &Router{
 		r:  make(map[string]func(*RequestCtx)),
 		mr: make(map[string]func(*RequestCtx)),
 	}
 	r.server = &Server{
 		Handler: r.handler,
 	}
+	r.server.MaxRequestBodySize = 20 * 1024 * 1024 * 1024
+	r.server.ReduceMemoryUsage=true
 	return r
 }
 func (r *Router) HandleFunc(s string, f func(*RequestCtx)) {
@@ -28,7 +30,7 @@ func (r *Router) AddPreHandler(f func(*RequestCtx)) {
 	r.pre = append(r.pre, f)
 }
 func (r *Router) ListenAndServe(addr string) error {
-	
+
 	return r.server.ListenAndServe(addr)
 }
 func (r *Router) handler(cx *RequestCtx) {
