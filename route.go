@@ -9,10 +9,14 @@ type Router struct {
 }
 
 func NewRouter() *Router {
-	return &Router{
+	r:= &Router{
 		r:  make(map[string]func(*RequestCtx)),
 		mr: make(map[string]func(*RequestCtx)),
 	}
+	r.server = &Server{
+		Handler: r.handler,
+	}
+	return r
 }
 func (r *Router) HandleFunc(s string, f func(*RequestCtx)) {
 	r.r[s] = f
@@ -24,9 +28,7 @@ func (r *Router) AddPreHandler(f func(*RequestCtx)) {
 	r.pre = append(r.pre, f)
 }
 func (r *Router) ListenAndServe(addr string) error {
-	r.server = &Server{
-		Handler: r.handler,
-	}
+	
 	return r.server.ListenAndServe(addr)
 }
 func (r *Router) handler(cx *RequestCtx) {
