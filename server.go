@@ -737,6 +737,9 @@ func (r *RequestCtx) WriteHeaderHTML() {
 func (r *RequestCtx) GetHeader(k string) string {
 	return string(r.Request.Header.Peek(k))
 }
+func (r *RequestCtx) GetMethod() string {
+	return string(r.Method())
+}
 
 // URI returns requested uri.
 //
