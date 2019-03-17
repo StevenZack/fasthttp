@@ -734,6 +734,10 @@ func (r *RequestCtx) GetURI() string {
 func (r *RequestCtx) WriteHeaderHTML() {
 	r.Response.Header.Set("Content-Type", "text/html")
 }
+func (r *RequestCtx) WriteHTML(s string) {
+	r.WriteHeaderHTML()
+	r.WriteString(s)
+}
 func (r *RequestCtx) GetHeader(k string) string {
 	return string(r.Request.Header.Peek(k))
 }
