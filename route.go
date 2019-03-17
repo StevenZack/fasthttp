@@ -16,7 +16,6 @@ func NewRouter() *Router {
 	r.server = &Server{
 		Handler: r.handler,
 	}
-	r.server.MaxRequestBodySize = 20 * 1024 * 1024 * 1024
 	r.server.ReduceMemoryUsage=true
 	return r
 }
