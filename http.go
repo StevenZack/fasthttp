@@ -948,9 +948,9 @@ func (req *Request) ContinueReadBody(r *bufio.Reader, maxBodySize int) error {
 	var err error
 	contentLength := req.Header.realContentLength()
 	if contentLength > 0 {
-		if maxBodySize > 0 && contentLength > maxBodySize {
-			return ErrBodyTooLarge
-		}
+		// if maxBodySize > 0 && contentLength > maxBodySize {
+		// 	return ErrBodyTooLarge
+		// }
 
 		// Pre-read multipart form data of known length.
 		// This way we limit memory usage for large file uploads, since their contents
@@ -1604,9 +1604,9 @@ var ErrBodyTooLarge = errors.New("body size exceeds the given limit")
 func readBody(r *bufio.Reader, contentLength int, maxBodySize int, dst []byte) ([]byte, error) {
 	dst = dst[:0]
 	if contentLength >= 0 {
-		if maxBodySize > 0 && contentLength > maxBodySize {
-			return dst, ErrBodyTooLarge
-		}
+		// if maxBodySize > 0 && contentLength > maxBodySize {
+		// 	return dst, ErrBodyTooLarge
+		// }
 		return appendBodyFixedSize(r, dst, contentLength)
 	}
 	if contentLength == -1 {
@@ -1633,9 +1633,9 @@ func readBodyIdentity(r *bufio.Reader, maxBodySize int, dst []byte) ([]byte, err
 			panic(fmt.Sprintf("BUG: bufio.Read() returned (%d, nil)", nn))
 		}
 		offset += nn
-		if maxBodySize > 0 && offset > maxBodySize {
-			return dst[:offset], ErrBodyTooLarge
-		}
+		// if maxBodySize > 0 && offset > maxBodySize {
+		// 	return dst[:offset], ErrBodyTooLarge
+		// }
 		if len(dst) == offset {
 			n := round2(2 * offset)
 			if maxBodySize > 0 && n > maxBodySize {
@@ -1696,9 +1696,9 @@ func readBodyChunked(r *bufio.Reader, maxBodySize int, dst []byte) ([]byte, erro
 		if err != nil {
 			return dst, err
 		}
-		if maxBodySize > 0 && len(dst)+chunkSize > maxBodySize {
-			return dst, ErrBodyTooLarge
-		}
+		// if maxBodySize > 0 && len(dst)+chunkSize > maxBodySize {
+		// 	return dst, ErrBodyTooLarge
+		// }
 		dst, err = appendBodyFixedSize(r, dst, chunkSize+strCRLFLen)
 		if err != nil {
 			return dst, err
