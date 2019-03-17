@@ -728,6 +728,15 @@ func (ctx *RequestCtx) RequestURI() []byte {
 func (r *RequestCtx) SetHeader(k, v string) {
 	r.Response.Header.Set(k, v)
 }
+func (r *RequestCtx) SetSVGHeader() {
+	r.SetHeader("Content-Type", "image/svg+xml")
+}
+func (r *RequestCtx) SetJsHeader() {
+	r.SetHeader("Content-Type", "text/javascript")
+}
+func (r *RequestCtx) SetCssHeader() {
+	r.SetHeader("Content-Type", "text/css")
+}
 func (r *RequestCtx) GetURI() string {
 	return string(r.URI().Path())
 }
@@ -1174,7 +1183,18 @@ func (ctx *RequestCtx) NotModified() {
 func (ctx *RequestCtx) NotFound() {
 	ctx.Response.Reset()
 	ctx.SetStatusCode(StatusNotFound)
-	ctx.SetBodyString("404 Page not found")
+	ctx.SetBodyString(`<!DOCTYPE html>
+	<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<title>404 not found</title>
+	</head>
+	<body>
+	404 not found
+	</body>
+	</html>`)
 }
 
 // Write writes p into response body.
