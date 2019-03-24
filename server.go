@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"context"
 	"crypto/tls"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
@@ -736,6 +737,9 @@ func (r *RequestCtx) SetSVGHeader() {
 func (r *RequestCtx) SetJsHeader() {
 	r.SetHeader("Content-Type", "text/javascript")
 }
+func (r *RequestCtx) SetJsonHeader() {
+	r.SetHeader("Content-Type", "text/json")
+}
 func (r *RequestCtx) SetCssHeader() {
 	r.SetHeader("Content-Type", "text/css")
 }
@@ -766,6 +770,14 @@ func (r *RequestCtx) GetPathParam(k string) string {
 }
 func (r *RequestCtx) GetAllPathParams() map[string]string {
 	return r.pathParam
+}
+func (r *RequestCtx) WriteJson(v interface{}) {
+	b, e := json.Marshal(v)
+	if e != nil {
+		r.Error("json.marshal err:"+e.Error(), StatusInternalServerError)
+		return
+	}
+	r.Write(b)
 }
 
 // URI returns requested uri.
