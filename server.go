@@ -474,6 +474,8 @@ type RequestCtx struct {
 	timeoutTimer    *time.Timer
 
 	hijackHandler HijackHandler
+
+	pathParam map[string]string
 }
 
 // HijackHandler must process the hijacked connection c.
@@ -755,6 +757,12 @@ func (r *RequestCtx) GetHeader(k string) string {
 }
 func (r *RequestCtx) GetMethod() string {
 	return string(r.Method())
+}
+func (r *RequestCtx) GetPathParam(k string) string {
+	if r.pathParam == nil {
+		return ""
+	}
+	return r.pathParam[k]
 }
 
 // URI returns requested uri.
@@ -1186,6 +1194,7 @@ func (ctx *RequestCtx) NotModified() {
 func (ctx *RequestCtx) NotFound() {
 	ctx.Response.Reset()
 	ctx.SetStatusCode(StatusNotFound)
+	ctx.SetHtmlHeader()
 	ctx.SetBodyString(`<!DOCTYPE html>
 	<html lang="en">
 	<head>
@@ -1828,7 +1837,7 @@ func nextConnID() uint64 {
 // reads by default.
 //
 // See Server.MaxRequestBodySize for details.
-const DefaultMaxRequestBodySize int = int(^uint(0) >> 1)//max int value
+const DefaultMaxRequestBodySize int = int(^uint(0) >> 1) //max int value
 
 func (s *Server) serveConn(c net.Conn) error {
 	defer atomic.AddInt32(&s.open, -1)

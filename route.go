@@ -1,11 +1,15 @@
 package fasthttp
 
-import "strings"
+import (
+	"strings"
+
+	"github.com/StevenZack/tools/strToolkit"
+)
 
 type Router struct {
-	r, mr  map[string]func(*RequestCtx)
-	pre    []func(*RequestCtx)
-	server *Server
+	r, mr, pr map[string]func(*RequestCtx)
+	pre       []func(*RequestCtx)
+	server    *Server
 }
 
 func NewRouter() *Router {
@@ -20,6 +24,10 @@ func NewRouter() *Router {
 	return r
 }
 func (r *Router) HandleFunc(s string, f func(*RequestCtx)) {
+	if strings.Contains(s, "/:") {
+		r.parsePathParams(s, f)
+		return
+	}
 	r.r[s] = f
 }
 func (r *Router) HandleMultiReqs(s string, f func(*RequestCtx)) {
@@ -42,8 +50,7 @@ func (r *Router) handler(cx *RequestCtx) {
 	} else if k, ok := hasPreffixInMap(r.mr, cx.GetURI()); ok {
 		r.mr[k](cx)
 	} else {
-		cx.Response.SetStatusCode(404)
-		cx.WriteHTML(`<!DOCTYPE html><html><head><title>404</title><meta charset="utf-8"><meta name="viewpos" content="width=device-width"></head><body>404 not found</body></html>`)
+		cx.NotFound()
 	}
 }
 func (r *Router) GetServer() *Server {
@@ -56,4 +63,30 @@ func hasPreffixInMap(m map[string]func(*RequestCtx), p string) (string, bool) {
 		}
 	}
 	return "", false
+}
+func (r *Router) parsePathParams(s string, f func(*RequestCtx)) {
+	prefix := s[:strings.Index(s, "/:")+1]
+	params := strings.Split(s, "/")
+	indexes := []int{}
+	keys := []string{}
+	for index, param := range params {
+		if strToolkit.StartsWith(param, ":") && len(param) > 1 {
+			indexes = append(indexes, index)
+			keys = append(keys, param[1:])
+		}
+	}
+	r.mr[prefix] = func(cx *RequestCtx) {
+		strs := strings.Split(cx.GetURI(), "/")
+		if len(params) != len(strs) {
+			cx.NotFound()
+			return
+		}
+		if cx.pathParam == nil {
+			cx.pathParam = make(map[string]string)
+		}
+		for keyIndex, index := range indexes {
+			cx.pathParam[keys[keyIndex]] = strs[index]
+		}
+		f(cx)
+	}
 }
