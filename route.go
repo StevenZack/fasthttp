@@ -16,7 +16,7 @@ func NewRouter() *Router {
 	r.server = &Server{
 		Handler: r.handler,
 	}
-	r.server.ReduceMemoryUsage=true
+	r.server.ReduceMemoryUsage = true
 	return r
 }
 func (r *Router) HandleFunc(s string, f func(*RequestCtx)) {
@@ -43,7 +43,7 @@ func (r *Router) handler(cx *RequestCtx) {
 		r.mr[k](cx)
 	} else {
 		cx.Response.SetStatusCode(404)
-		cx.WriteString(`<!DOCTYPE html><html><head><title>404</title><meta charset="utf-8"><meta name="viewpos" content="width=device-width"></head><body>404 not found</body></html>`)
+		cx.WriteHTML(`<!DOCTYPE html><html><head><title>404</title><meta charset="utf-8"><meta name="viewpos" content="width=device-width"></head><body>404 not found</body></html>`)
 	}
 }
 func (r *Router) GetServer() *Server {

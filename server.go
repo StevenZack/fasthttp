@@ -743,11 +743,11 @@ func (r *RequestCtx) SetContentLength(l int) {
 func (r *RequestCtx) GetURI() string {
 	return string(r.URI().Path())
 }
-func (r *RequestCtx) WriteHeaderHTML() {
+func (r *RequestCtx) SetHtmlHeader() {
 	r.Response.Header.Set("Content-Type", "text/html")
 }
 func (r *RequestCtx) WriteHTML(s string) {
-	r.WriteHeaderHTML()
+	r.SetHtmlHeader()
 	r.WriteString(s)
 }
 func (r *RequestCtx) GetHeader(k string) string {
