@@ -764,6 +764,9 @@ func (r *RequestCtx) GetPathParam(k string) string {
 	}
 	return r.pathParam[k]
 }
+func (r *RequestCtx) GetAllPathParams() map[string]string {
+	return r.pathParam
+}
 
 // URI returns requested uri.
 //
