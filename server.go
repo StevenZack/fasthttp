@@ -772,6 +772,7 @@ func (r *RequestCtx) GetAllPathParams() map[string]string {
 	return r.pathParam
 }
 func (r *RequestCtx) WriteJson(v interface{}) {
+	r.SetJsonHeader()
 	b, e := json.Marshal(v)
 	if e != nil {
 		r.Error("json.marshal err:"+e.Error(), StatusInternalServerError)
