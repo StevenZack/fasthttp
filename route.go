@@ -44,10 +44,11 @@ func (r *Router) handler(cx *RequestCtx) {
 	for _, pre := range r.pre {
 		pre(cx)
 	}
-	url := strings.Split(cx.GetURI(), "?")[0]
+	requestUri := string(cx.RequestURI())
+	url := strings.Split(string(requestUri), "?")[0]
 	if h, ok := r.r[url]; ok {
 		h(cx)
-	} else if k, ok := hasPreffixInMap(r.mr, cx.GetURI()); ok {
+	} else if k, ok := hasPreffixInMap(r.mr, requestUri); ok {
 		r.mr[k](cx)
 	} else {
 		cx.NotFound()

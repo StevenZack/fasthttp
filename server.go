@@ -747,7 +747,7 @@ func (r *RequestCtx) SetContentLength(l int) {
 	r.SetHeader("Content-Length", fmt.Sprintf("%v", l))
 }
 func (r *RequestCtx) GetURI() string {
-	return string(r.URI().Path())
+	return string(r.RequestURI())
 }
 func (r *RequestCtx) SetHtmlHeader() {
 	r.Response.Header.Set("Content-Type", "text/html")
