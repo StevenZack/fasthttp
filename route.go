@@ -2,8 +2,6 @@ package fasthttp
 
 import (
 	"strings"
-
-	"github.com/StevenZack/tools/strToolkit"
 )
 
 type Router struct {
@@ -71,7 +69,7 @@ func (r *Router) parsePathParams(s string, f func(*RequestCtx)) {
 	indexes := []int{}
 	keys := []string{}
 	for index, param := range params {
-		if strToolkit.StartsWith(param, ":") && len(param) > 1 {
+		if strings.HasPrefix(param, ":") && len(param) > 1 {
 			indexes = append(indexes, index)
 			keys = append(keys, param[1:])
 		}
