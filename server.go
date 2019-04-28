@@ -756,6 +756,11 @@ func (r *RequestCtx) WriteHTML(s string) {
 	r.SetHtmlHeader()
 	r.WriteString(s)
 }
+
+func (r *RequestCtx) FormValueString(key string) string {
+	return string(r.FormValue(key))
+}
+
 func (r *RequestCtx) GetHeader(k string) string {
 	return string(r.Request.Header.Peek(k))
 }
