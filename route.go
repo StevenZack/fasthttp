@@ -3,6 +3,7 @@ package fasthttp
 import (
 	"strings"
 
+	"github.com/StevenZack/tools/encodingToolkit"
 	"github.com/StevenZack/tools/strToolkit"
 )
 
@@ -86,7 +87,10 @@ func (r *Router) parsePathParams(s string, f func(*RequestCtx)) {
 			cx.pathParam = make(map[string]string)
 		}
 		for keyIndex, index := range indexes {
-			cx.pathParam[keys[keyIndex]] = strs[index]
+			str, e := encodingToolkit.UrlDecode(strs[index])
+			if e == nil {
+				cx.pathParam[keys[keyIndex]] = str
+			}
 		}
 		f(cx)
 	}
