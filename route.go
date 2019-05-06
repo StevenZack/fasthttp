@@ -35,8 +35,10 @@ func (r *Router) AddPreHandler(f func(*RequestCtx)) {
 	r.pre = append(r.pre, f)
 }
 func (r *Router) ListenAndServe(addr string) error {
-
 	return r.server.ListenAndServe(addr)
+}
+func (r *Router) ListenAndServeTLS(addr, certFile, keyFile string) error {
+	return r.server.ListenAndServeTLS(addr, certFile, keyFile)
 }
 func (r *Router) handler(cx *RequestCtx) {
 	for _, pre := range r.pre {
