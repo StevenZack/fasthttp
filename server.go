@@ -767,16 +767,15 @@ func (r *RequestCtx) GetHeader(k string) string {
 func (r *RequestCtx) GetMethod() string {
 	return string(r.Method())
 }
-func (r *RequestCtx) GetPathParam(k string) (string, error) {
-	e := errors.New("path param " + k + " not found")
+func (r *RequestCtx) GetPathParam(k string) string{
 	if r.pathParam == nil {
-		return "", e
+		return ""
 	}
 	v, ok := r.pathParam[k]
 	if !ok {
-		return "", e
+		return ""
 	}
-	return v, nil
+	return v
 }
 func (r *RequestCtx) GetAllPathParams() map[string]string {
 	return r.pathParam
